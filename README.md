@@ -14,9 +14,12 @@ Or with Postgres: `cp .env.example .env && docker compose up --build`
 
 ## Design
 - FastAPI + SQLAlchemy 2 + server-rendered Jinja templates (no JS needed)
+- Responsive, accessible interface with a consistent editorial visual style and no externally hosted assets
 - Argon2 password hashing, signed session cookies, CSRF tokens on every POST, security headers
 - `app/reveal.py` holds the photo-unlock rule as pure, tested logic
 - First letters must be 80+ characters, to discourage low-effort swiping
+
+The visual refresh does not mean the service is production-ready. Complete the safeguards below before serving real users.
 
 ## Roadmap / before real production
 - [ ] Alembic migrations (currently `create_all`)

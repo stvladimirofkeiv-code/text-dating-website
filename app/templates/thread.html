@@ -1,14 +1,41 @@
-{% extends "base.html" %}{% block content %}
-<h1>{{ other.display_name }}</h1>
-{% for m in c.messages %}<div class="msg {{ 'me' if m.sender_id == me.id else 'them' }}">{{ m.body }}</div>{% endfor %}
-<form method="post" action="/c/{{ c.id }}/send"><input type="hidden" name="csrf" value="{{ csrf_token(request) }}">
-<textarea name="body" required maxlength="4000"></textarea><button>Send</button></form>
-<div class="card">
-{% if unlocked %}<p class="ok"><strong>You both agreed. Photos are unlocked.</strong></p>
-<p class="muted">Photo upload/display isn't built yet (next milestone).</p>
-{% elif not can_reveal %}<p class="muted">Photos unlock after you've each written {{ min_each }} messages ({{ mine }}/{{ min_each }} from you, {{ theirs }}/{{ min_each }} from them) and you both agree.</p>
-{% elif i_want %}<p class="muted">You're ready to share photos. Waiting for {{ other.display_name }}.</p>
-{% else %}<p>{% if they_want %}{{ other.display_name }} is ready to share photos. {% endif %}Want to see each other?</p>
-<form method="post" action="/c/{{ c.id }}/reveal"><input type="hidden" name="csrf" value="{{ csrf_token(request) }}"><button>I'm ready to share photos</button></form>{% endif %}
-</div>
+{% extends "base.html" %}
+{% block title %}Letters with {{ other.display_name }} — Text First{% endblock %}
+{% block content %}
+<header class="thread-head">
+  <div>
+    <p class="eyebrow">A conversation with</p>
+    <h1>{{ other.display_name }}</h1>
+  </div>
+  <a class="thread-back" href="/inbox">All letters</a>
+</header>
+<section class="conversation" aria-label="Conversation with {{ other.display_name }}">
+  {% for m in c.messages %}
+  <div class="msg {{ 'me' if m.sender_id == me.id else 'them' }}">{{ m.body }}</div>
+  {% else %}
+  <div class="empty-state"><p>Every good conversation starts with a first word.</p></div>
+  {% endfor %}
+</section>
+<form class="composer" method="post" action="/c/{{ c.id }}/send">
+  <input type="hidden" name="csrf" value="{{ csrf_token(request) }}">
+  <label class="sr-only" for="reply">Write a reply</label>
+  <textarea id="reply" name="body" required maxlength="4000" placeholder="Write a thoughtful reply…"></textarea>
+  <button type="submit">Send</button>
+</form>
+<section class="privacy-card" aria-label="Photo sharing status">
+  <p class="section-label">Share photos, when you're both ready</p>
+  {% if unlocked %}
+  <p class="notice success" role="status"><strong>You both agreed.</strong> Photos are unlocked.</p>
+  <p class="muted small">Photo upload and display aren't available yet.</p>
+  {% elif not can_reveal %}
+  <p class="muted">Photos unlock after you've each written {{ min_each }} messages and you both agree. You've written {{ mine }} of {{ min_each }}; {{ other.display_name }} has written {{ theirs }} of {{ min_each }}.</p>
+  {% elif i_want %}
+  <p class="muted">You're ready to share photos. Waiting for {{ other.display_name }}.</p>
+  {% else %}
+  {% if they_want %}<p>{{ other.display_name }} is ready to share photos. Are you?</p>{% else %}<p>Get to know each other through conversation first. When you're both ready, you can choose to share photos.</p>{% endif %}
+  <form method="post" action="/c/{{ c.id }}/reveal">
+    <input type="hidden" name="csrf" value="{{ csrf_token(request) }}">
+    <button class="button secondary" type="submit">I'm ready to share photos</button>
+  </form>
+  {% endif %}
+</section>
 {% endblock %}

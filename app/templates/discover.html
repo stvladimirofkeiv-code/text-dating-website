@@ -1,8 +1,30 @@
-{% extends "base.html" %}{% block content %}
-<h1>Discover</h1>
-{% for p in people %}
-<div class="card"><strong>{{ p.display_name }}, {{ p.age }}</strong> <span class="muted">{{ p.city }}</span>
-<p>{{ p.bio[:300] }}{% if p.bio|length > 300 %}…{% endif %}</p>
-<a class="btn" href="/people/{{ p.id }}">Read more</a></div>
-{% else %}<p class="muted">No one new right now. {% if not me.bio %}<a href="/profile">Complete your profile</a> to be seen.{% endif %}</p>{% endfor %}
+{% extends "base.html" %}
+{% block title %}Discover — Text First{% endblock %}
+{% block main_class %}wide{% endblock %}
+{% block content %}
+<section class="page-intro">
+  <p class="eyebrow">A better first impression</p>
+  <h1>Meet someone<br>worth talking to.</h1>
+  <p class="lead">Start with what matters: the way they think, what they care about, and the words they choose.</p>
+</section>
+<section aria-label="People to discover">
+  {% for p in people %}
+  <article class="card profile-card">
+    <div class="profile-card-top">
+      <h2 class="profile-name">{{ p.display_name }}, {{ p.age }}</h2>
+      {% if p.city %}<span class="profile-location">{{ p.city }}</span>{% endif %}
+    </div>
+    <p class="profile-excerpt">{{ p.bio[:300] }}{% if p.bio|length > 300 %}…{% endif %}</p>
+    <div class="profile-footer">
+      <span class="muted small">A profile made of words, not photos.</span>
+      <a class="button" href="/people/{{ p.id }}">Read their story</a>
+    </div>
+  </article>
+  {% else %}
+  <div class="empty-state">
+    <p>No new profiles to read just yet.
+    {% if not me.bio %}<a href="/profile">Finish your profile</a> to join the conversation.{% else %}<a href="/profile">Keep your profile up to date</a> and check back soon.{% endif %}</p>
+  </div>
+  {% endfor %}
+</section>
 {% endblock %}

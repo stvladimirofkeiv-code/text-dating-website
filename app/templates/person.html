@@ -1,10 +1,30 @@
-{% extends "base.html" %}{% block content %}
-<h1>{{ p.display_name }}, {{ p.age }}</h1><p class="muted">{{ p.city }}</p>
-<div class="card"><h3>About</h3><p style="white-space:pre-wrap">{{ p.bio }}</p>
-<h3>Looking for</h3><p style="white-space:pre-wrap">{{ p.looking_for }}</p></div>
-<h3>Write a first letter</h3>
-{% if error %}<p class="err">{{ error }}</p>{% endif %}
-<form method="post" action="/people/{{ p.id }}/letter"><input type="hidden" name="csrf" value="{{ csrf_token(request) }}">
-<textarea name="body" required minlength="{{ min_len }}" placeholder="Say something specific about what they wrote…"></textarea>
-<button>Send letter</button></form>
+{% extends "base.html" %}
+{% block title %}{{ p.display_name }} — Text First{% endblock %}
+{% block content %}
+<a class="thread-back" href="/discover">← Back to discover</a>
+<section class="page-intro person-intro">
+  <p class="eyebrow">A first impression in their own words</p>
+  <h1>{{ p.display_name }}{% if p.age %}, {{ p.age }}{% endif %}</h1>
+  {% if p.city %}<p class="lead">{{ p.city }}</p>{% endif %}
+</section>
+<article class="card content-panel">
+  <p class="section-label">A little about them</p>
+  <p>{{ p.bio }}</p>
+  {% if p.looking_for %}
+  <p class="section-label">Hoping to find</p>
+  <p>{{ p.looking_for }}</p>
+  {% endif %}
+</article>
+<section class="card form-card">
+  <p class="eyebrow">Start with a letter</p>
+  <h2>Tell them what caught your attention.</h2>
+  <p class="muted small">Thoughtful first letters are at least {{ min_len }} characters.</p>
+  {% if error %}<p class="notice error" role="alert">{{ error }}</p>{% endif %}
+  <form method="post" action="/people/{{ p.id }}/letter">
+    <input type="hidden" name="csrf" value="{{ csrf_token(request) }}">
+    <label class="sr-only" for="first-letter">Your letter</label>
+    <textarea id="first-letter" name="body" required minlength="{{ min_len }}" maxlength="4000" placeholder="Say something specific about what they wrote…"></textarea>
+    <div class="form-actions"><button type="submit">Send your letter</button></div>
+  </form>
+</section>
 {% endblock %}

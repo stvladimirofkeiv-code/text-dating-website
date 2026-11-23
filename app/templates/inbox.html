@@ -1,6 +1,23 @@
-{% extends "base.html" %}{% block content %}
-<h1>Letters</h1>
-{% for r in rows %}<div class="card"><a href="/c/{{ r.c.id }}"><strong>{{ r.other.display_name }}</strong></a>
-{% if r.last %}<p class="muted">{{ r.last.body[:120] }}</p>{% endif %}</div>
-{% else %}<p class="muted">No letters yet. <a href="/discover">Find someone to write to.</a></p>{% endfor %}
+{% extends "base.html" %}
+{% block title %}Your letters — Text First{% endblock %}
+{% block content %}
+<section class="page-intro">
+  <p class="eyebrow">Good conversations start somewhere</p>
+  <h1>Your letters</h1>
+  <p class="lead">Pick up where you left off.</p>
+</section>
+{% for r in rows %}
+<a class="card inbox-item" href="/c/{{ r.c.id }}">
+  <span>
+    <strong>{{ r.other.display_name }}</strong>
+    {% if r.last %}<span class="inbox-preview">{{ r.last.body[:120] }}{% if r.last.body|length > 120 %}…{% endif %}</span>
+    {% else %}<span class="inbox-preview">Your conversation is ready to begin.</span>{% endif %}
+  </span>
+  <span class="inbox-arrow" aria-hidden="true">→</span>
+</a>
+{% else %}
+<div class="empty-state">
+  <p>No letters yet. <a href="/discover">Find someone to write to.</a></p>
+</div>
+{% endfor %}
 {% endblock %}
