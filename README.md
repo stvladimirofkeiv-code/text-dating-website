@@ -5,6 +5,22 @@ both people have written a minimum number of messages **and** both explicitly op
 
 ## Run locally
 ```bash
+#!/usr/bin/env bash
+set -e
+
+# System packages
+sudo apt update
+sudo apt install -y git curl python3 python3-venv python3-pip build-essential libpq-dev
+
+# Docker (optional, for docker compose + Postgres)
+sudo apt install -y docker.io docker-compose-v2
+sudo usermod -aG docker "$USER"   # log out/in afterwards
+
+# VS Code (needed for Cline; skip if you use Remote-SSH from your own machine)
+sudo snap install code --classic
+code --install-extension saoudrizwan.claude-dev   # the Cline extension
+```
+```bash
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements-dev.txt
 uvicorn app.main:app --reload      # uses SQLite (dev.db) by default
