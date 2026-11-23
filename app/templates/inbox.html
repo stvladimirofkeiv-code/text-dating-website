@@ -1,0 +1,6 @@
+{% extends "base.html" %}{% block content %}
+<h1>Letters</h1>
+{% for r in rows %}<div class="card"><a href="/c/{{ r.c.id }}"><strong>{{ r.other.display_name }}</strong></a>
+{% if r.last %}<p class="muted">{{ r.last.body[:120] }}</p>{% endif %}</div>
+{% else %}<p class="muted">No letters yet. <a href="/discover">Find someone to write to.</a></p>{% endfor %}
+{% endblock %}

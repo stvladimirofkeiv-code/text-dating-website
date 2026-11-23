@@ -1,0 +1,10 @@
+{% extends "base.html" %}{% block content %}
+<h1>{{ p.display_name }}, {{ p.age }}</h1><p class="muted">{{ p.city }}</p>
+<div class="card"><h3>About</h3><p style="white-space:pre-wrap">{{ p.bio }}</p>
+<h3>Looking for</h3><p style="white-space:pre-wrap">{{ p.looking_for }}</p></div>
+<h3>Write a first letter</h3>
+{% if error %}<p class="err">{{ error }}</p>{% endif %}
+<form method="post" action="/people/{{ p.id }}/letter"><input type="hidden" name="csrf" value="{{ csrf_token(request) }}">
+<textarea name="body" required minlength="{{ min_len }}" placeholder="Say something specific about what they wrote…"></textarea>
+<button>Send letter</button></form>
+{% endblock %}

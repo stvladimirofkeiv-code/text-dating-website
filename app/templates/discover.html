@@ -1,0 +1,8 @@
+{% extends "base.html" %}{% block content %}
+<h1>Discover</h1>
+{% for p in people %}
+<div class="card"><strong>{{ p.display_name }}, {{ p.age }}</strong> <span class="muted">{{ p.city }}</span>
+<p>{{ p.bio[:300] }}{% if p.bio|length > 300 %}…{% endif %}</p>
+<a class="btn" href="/people/{{ p.id }}">Read more</a></div>
+{% else %}<p class="muted">No one new right now. {% if not me.bio %}<a href="/profile">Complete your profile</a> to be seen.{% endif %}</p>{% endfor %}
+{% endblock %}

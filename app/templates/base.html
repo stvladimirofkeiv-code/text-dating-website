@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Text First{% endblock %}</title>
+<style>
+:root{--bg:#faf7f2;--fg:#2a2420;--muted:#7a6f66;--card:#fff;--accent:#8c3b2e;--line:#e6ddd2}
+@media (prefers-color-scheme:dark){:root{--bg:#1b1815;--fg:#f0e9e1;--muted:#a89c91;--card:#252019;--accent:#e08a74;--line:#3a332b}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.6 Georgia,"Iowan Old Style",serif}
+header{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:1px solid var(--line)}
+header a{color:var(--fg);text-decoration:none;margin-right:16px}header .brand{font-weight:bold;color:var(--accent)}
+main{max-width:680px;margin:0 auto;padding:24px 20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px;margin:14px 0}
+input,textarea{width:100%;padding:10px;font:inherit;color:inherit;background:var(--bg);border:1px solid var(--line);border-radius:6px;margin:4px 0 14px}
+textarea{min-height:140px}
+button,.btn{background:var(--accent);color:#fff;border:0;border-radius:6px;padding:10px 18px;font:inherit;cursor:pointer;text-decoration:none;display:inline-block}
+button.link{background:none;color:var(--fg);padding:0}
+.muted{color:var(--muted);font-size:.9em}.err{color:#c0392b}.ok{color:#2e7d32}
+.msg{margin:10px 0;padding:10px 14px;border-radius:10px;white-space:pre-wrap;max-width:85%}
+.msg.me{background:var(--accent);color:#fff;margin-left:auto}.msg.them{background:var(--card);border:1px solid var(--line)}
+form.inline{display:inline}
+</style>
+</head>
+<body>
+<header>
+<div><a class="brand" href="/">Text First</a>
+{% if me %}<a href="/discover">Discover</a><a href="/inbox">Letters</a><a href="/profile">My profile</a>{% endif %}</div>
+{% if me %}<form class="inline" method="post" action="/logout"><input type="hidden" name="csrf" value="{{ csrf_token(request) }}"><button class="link">Log out</button></form>{% endif %}
+</header>
+<main>{% block content %}{% endblock %}</main>
+</body></html>

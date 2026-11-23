@@ -1,0 +1,11 @@
+{% extends "base.html" %}{% block content %}
+<h1>Your profile</h1>
+<p class="muted">This is all anyone sees at first: your words.</p>
+{% if saved %}<p class="ok">Saved.</p>{% endif %}
+<form method="post"><input type="hidden" name="csrf" value="{{ csrf_token(request) }}">
+<label>Age<input type="number" name="age" min="18" max="120" value="{{ me.age or '' }}" required></label>
+<label>City<input name="city" maxlength="100" value="{{ me.city }}"></label>
+<label>About you<textarea name="bio" maxlength="3000">{{ me.bio }}</textarea></label>
+<label>What you're looking for<textarea name="looking_for" maxlength="1500">{{ me.looking_for }}</textarea></label>
+<button>Save</button></form>
+{% endblock %}
